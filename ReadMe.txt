@@ -1,3 +1,3 @@
-Nama	: Failan Rahsya Izzul Pratama
+Nama	: Fahmi Aji Wicaksono
 Kelas	: XII RPL 2
-No	: 32
+No	: 31
