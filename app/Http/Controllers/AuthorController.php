@@ -14,13 +14,11 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        $author =author::get();
-        return response()->json(
-            [
-                'status' => 200, 
-                'data' => $author
-            ], 200
-        ); 
+        $author= Author::all();
+        return response()->json([
+            'status' => 200,
+            'data' => $author
+        ],200);
     }
 
     /**
@@ -41,22 +39,18 @@ class AuthorController extends Controller
      */
     public function store(Request $request)
     {
-        $author = new author();
-            $author -> name = $request->name;
-            $author -> date_of_birth = $request->date_of_birth;
-            $author -> place_of_birth = $request->place_of_birth;
-            $author -> gender = $request->gender;
-            $author -> email = $request->email;
-            $author -> hp = $request->hp;
-            $author -> save();
-
-            return response()->json(
-            [
-                'status' => 201, 
-                'message' => 'data berhasil disimpan',
-                'data' => $author
-            ], 201
-        );
+        $author = new Author();
+        $author->name = $request-> input('name');
+        $author->date_of_birth = $request-> input ('date_of_birth');
+        $author->place_of_birth = $request-> input('place_of_birth');
+        $author->gender = $request-> input('gender');
+        $author->email = $request-> input('email');
+        $author->hp = $request-> input('hp');
+        $author->save();
+        return response()->json([
+            'status' => 200,
+            'data' => $author
+        ],200);
     }
 
     /**
@@ -67,20 +61,19 @@ class AuthorController extends Controller
      */
     public function show($id)
     {
-        $author =author::where('id', $id)->first();
-        if($author){
-            return response()->json([
-                'status' => 200,
-                'data' => $author
-
-            ],200);
-        }
-        else{
-            return response()->json([
-                'status' => 404,
-                'message' => 'id atas ' . $id . ' tidak ditemukan'
-            ],404);
-        }
+        $author = author::find($id);
+       if($author){
+        return response()->json([
+            'status' => 200,
+            'data' => $author
+        ],200);
+       } 
+       else{
+        return response()->json([
+            'status' => 404,
+            'data' => 'id atas' . $id. 'tidak ditemukan'
+        ],404);
+       }
     }
 
     /**
@@ -103,26 +96,23 @@ class AuthorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $author=author::find($id);
-        if($author)
-        {
-            $author -> name = $request->name ? $request->name : $author->name;
-            $author -> date_of_birth = $request->date_of_birth ? $request->date_of_birth : $author->date_of_birth;
-            $author -> place_of_birth = $request->place_of_birth ? $request->place_of_birth : $place_of_birth->place_of_birth;
-            $author -> gender = $request->gender ? $request->gender : $author->gender;
-            $author -> email = $request->email ? $request->email : $author->email;
-            $author -> hp = $request->hp ? $request->hp : $author->hp;
-            $author -> save();
+        $author = author::find($id);
+        if($author){
+            $author->name = $request-> name ? $request->name : $author->name;
+            $author->date_of_birth = $request-> date_of_birth ? $request->date_of_birth : $author->date_of_birth;
+            $author->place_of_birth = $request-> place_of_birth ? $request->place_of_birth : $author->place_of_birth;
+            $author->gender = $request-> gender  ? $request->gender: $author->gender;
+            $author->email = $request-> email  ? $request->email : $author->email;
+            $author->hp = $request-> hp ? $request->hp: $author->hp;
+            $author->save();
             return response()->json([
-                'status' => 200,
+                'status' => 201,
                 'data' => $author
-
             ],200);
-        }
-        else{
+        } else {
             return response()->json([
                 'status' => 404,
-                'message' => 'id atas ' . $id . ' tidak ditemukan'
+                'message' => $id. 'tidak ditemukan'
             ],404);
         }
     }
@@ -135,18 +125,18 @@ class AuthorController extends Controller
      */
     public function destroy($id)
     {
-        $author = author::where('id', $id)->first();
+        $author = author::where('id', $id) -> first();
         if($author){
             $author->delete();
             return response()->json([
                 'status' => 200,
-                'message' => 'data berhasil dihapus atas id ' . $id
+                'data' =>$author
             ],200);
         }else{
             return response()->json([
                 'status' => 404,
-                'message' => 'data diatas id ' . $id . ' tidak ditemukan'
-            ],404);
+                'message' => 'id'. $id . 'data tidak ditemukan'
+            ], 404);
         }
     }
 }
